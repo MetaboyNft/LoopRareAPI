@@ -12,7 +12,7 @@ namespace LoopRareAPI.Models
         {
             _container = cosmosDbClient.GetContainer(databaseName, containerName);
         }
-        public async Task<Rankings?> GetRankingsAsync(string collectionId)
+        public async Task<Rankings?> GetCollectionOverallRankingsAsync(string collectionId)
         {
             try
             {
@@ -27,12 +27,45 @@ namespace LoopRareAPI.Models
                         FeedResponse<Rankings> response = await iterator.ReadNextAsync();
                         foreach (var item in response)
                         {
-                            Console.WriteLine($"Found item:\t{item.name}");
                             rankings = item;
                         }
                     }
                 }
                 return rankings;
+            }
+            catch (CosmosException ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+        }
+
+        public async Task<NftMetadata?> GetCollectionSingleRankingsAsync(string collectionId, int nftNumber)
+        {
+            try
+            {
+                NftMetadata? nftMetadata = null;
+                // Can write raw SQL, but the iteration is a little annoying. 
+                var query = new QueryDefinition(query: "SELECT * FROM data c WHERE c.nftNumber = @nftNumber and c.collectionid = @collectionid")
+                .WithParameter("@nftNumber", nftNumber)
+                .WithParameter("@collectionid", collectionId);
+                using (FeedIterator<NftMetadata> iterator = _container.GetItemQueryIterator<NftMetadata>(query))
+                {
+                    while (iterator.HasMoreResults)
+                    {
+                        FeedResponse<NftMetadata> response = await iterator.ReadNextAsync();
+                        foreach (var item in response)
+                        {
+                            nftMetadata = item;
+                        }
+                    }
+                }
+                return nftMetadata;
             }
             catch (CosmosException ex)
             {

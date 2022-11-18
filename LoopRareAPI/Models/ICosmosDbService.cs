@@ -2,6 +2,7 @@
 {
     public interface ICosmosDbService
     {
-        Task<Rankings?> GetRankingsAsync(string collectionId);
+        Task<Rankings?> GetCollectionOverallRankingsAsync(string collectionId);
+        Task<NftMetadata?> GetCollectionSingleRankingsAsync(string collectionId, int nftNumber);
     }
 }

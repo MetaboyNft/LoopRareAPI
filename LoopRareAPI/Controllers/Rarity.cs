@@ -19,11 +19,17 @@ namespace LoopRareAPI.Controllers
 
         [HttpGet]
         [Route("rankings")]
-        public async Task<IActionResult> GetRankingsAsync(string collectionId)
+        public async Task<IActionResult> GetRankingsOverallAsync(string collectionId)
         {
-            return Ok(await _cosmosDbService.GetRankingsAsync(collectionId));
+            return Ok(await _cosmosDbService.GetCollectionOverallRankingsAsync(collectionId));
         }
 
 
+        [HttpGet]
+        [Route("rankingsSingle")]
+        public async Task<IActionResult> GetRankingsSingleAsync(string collectionId, int nftNumber)
+        {
+            return Ok(await _cosmosDbService.GetCollectionSingleRankingsAsync(collectionId, nftNumber));
+        }
     }
 }
