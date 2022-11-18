@@ -44,9 +44,5 @@ namespace LoopRareAPI
             var cosmosDbService = new CosmosDbService(client, configuration.GetValue<string>("CosmosDbDatabaseId"), configuration.GetValue<string>("CosmosDbContainerId"));
             return cosmosDbService;
         }
-
-        public void ConfigureServices(IServiceCollection services)
-        {
-        }
     }
 }
