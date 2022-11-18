@@ -28,11 +28,11 @@ namespace LoopRareAPI.Controllers
 
         [HttpGet]
         [Route("rankings")]
-        public async Task<Rankings> GetRankings(string collectionName)
+        public async Task<Rankings?> GetRankings(string collectionName)
         {
             try
             {
-                Rankings rankings = null;
+                Rankings? rankings = null;
                 var parameterizedQuery = new QueryDefinition(query: "SELECT * FROM c WHERE c.name = @Name").WithParameter("@Name",  collectionName + "-Ranks");
                 using FeedIterator<Rankings> iterator = _container.GetItemQueryIterator<Rankings>(queryDefinition: parameterizedQuery);
                 while (iterator.HasMoreResults)
@@ -46,10 +46,12 @@ namespace LoopRareAPI.Controllers
             }
             catch (CosmosException ex)
             {
+                Console.WriteLine(ex.Message);
                 return null;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return null;
             }
         }
