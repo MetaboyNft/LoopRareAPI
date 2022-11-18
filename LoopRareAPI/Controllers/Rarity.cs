@@ -32,7 +32,7 @@ namespace LoopRareAPI.Controllers
             try
             {
                 Rankings? rankings = null;
-                var query = new QueryDefinition(query: "SELECT * FROM c WHERE c.name = @name and c.collectionid = @collectionid")
+                var query = new QueryDefinition(query: "SELECT * FROM data c WHERE c.name = @name and c.collectionid = @collectionid")
                     .WithParameter("@name", "ranks")
                     .WithParameter("@collectionid", collectionId);
               
@@ -41,8 +41,10 @@ namespace LoopRareAPI.Controllers
                 {
                     while (iterator.HasMoreResults)
                     {
-                        foreach (var item in (await iterator.ReadNextAsync()).Resource)
+                        FeedResponse<Rankings> response = await iterator.ReadNextAsync();
+                        foreach (var item in response)
                         {
+                            Console.WriteLine($"Found item:\t{item.name}");
                             rankings = item;
                         }
                     }
