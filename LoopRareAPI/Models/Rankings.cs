@@ -2,8 +2,11 @@
 {
     public class Rankings
     {
+        public string? collectionid { get; set; }
         public string? name { get; set; }
+        public int total { get; set; }
         public List<Ranking> rankings { get; set; } = new List<Ranking>();
+
     }
     public class Ranking
     {

@@ -33,16 +33,18 @@ namespace LoopRareAPI.Controllers
             try
             {
                 Rankings? rankings = null;
-                var parameterizedQuery = new QueryDefinition(query: "SELECT * FROM c WHERE c.name = @Name and c.collectionid = @CollectionId")
-                    .WithParameter("@CollectionId", collectionId)
-                    .WithParameter("@Name", "ranks");
+                var query = new QueryDefinition(query: "SELECT * FROM c WHERE c.name = @name and c.collectionid = @collectionId")
+                    .WithParameter("@collectionId", collectionId)
+                    .WithParameter("@name", "ranks");
 
-                using FeedIterator<Rankings> iterator = _container.GetItemQueryIterator<Rankings>(queryDefinition: parameterizedQuery);
-                while (iterator.HasMoreResults)
+                using (FeedIterator<Rankings> iterator = _container.GetItemQueryIterator<Rankings>(query,requestOptions: new QueryRequestOptions() { PartitionKey = new PartitionKey($"{collectionId}")}))
                 {
-                    foreach (var item in (await iterator.ReadNextAsync()).Resource)
+                    while (iterator.HasMoreResults)
                     {
-                        rankings = item;
+                        foreach (var item in (await iterator.ReadNextAsync()).Resource)
+                        {
+                            rankings = item;
+                        }
                     }
                 }
                 return rankings;
