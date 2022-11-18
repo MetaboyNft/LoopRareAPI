@@ -33,7 +33,8 @@ namespace LoopRareAPI.Controllers
             try
             {
                 Rankings rankings = null;
-                var iterator = _container.GetItemQueryIterator<Rankings>($"SELECT * FROM c WHERE c.name = '{collectionName}-Ranks'");
+                var parameterizedQuery = new QueryDefinition(query: "SELECT * FROM c WHERE c.name = @Name").WithParameter("@Name",  collectionName + "-Ranks");
+                using FeedIterator<Rankings> iterator = _container.GetItemQueryIterator<Rankings>(queryDefinition: parameterizedQuery);
                 while (iterator.HasMoreResults)
                 {
                     foreach (var item in (await iterator.ReadNextAsync()).Resource)
