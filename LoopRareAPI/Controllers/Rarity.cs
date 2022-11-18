@@ -28,12 +28,15 @@ namespace LoopRareAPI.Controllers
 
         [HttpGet]
         [Route("rankings")]
-        public async Task<Rankings?> GetRankings(string collectionName)
+        public async Task<Rankings?> GetRankings(string collectionId)
         {
             try
             {
                 Rankings? rankings = null;
-                var parameterizedQuery = new QueryDefinition(query: "SELECT * FROM c WHERE c.name = @Name").WithParameter("@Name",  collectionName + "-Ranks");
+                var parameterizedQuery = new QueryDefinition(query: "SELECT * FROM c WHERE c.name = @Name and c.collectionid = @CollectionId")
+                    .WithParameter("@CollectionId", collectionId)
+                    .WithParameter("@Name", "ranks");
+
                 using FeedIterator<Rankings> iterator = _container.GetItemQueryIterator<Rankings>(queryDefinition: parameterizedQuery);
                 while (iterator.HasMoreResults)
                 {
