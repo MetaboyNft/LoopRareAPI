@@ -20,8 +20,7 @@ namespace LoopRareAPI.Controllers
             _config = config;
             _client = new CosmosClient(
                accountEndpoint: _config.GetValue<string>("CosmosDbEndpoint"),
-               authKeyOrResourceToken: _config.GetValue<string>("CosmosDbAuthKey"),
-               clientOptions: new CosmosClientOptions() { ApplicationName = _config.GetValue<string>("CosmosDbApplicationName") });
+               authKeyOrResourceToken: _config.GetValue<string>("CosmosDbAuthKey"));
             _container = _client.GetContainer(databaseId: _config.GetValue<string>("CosmosDbDatabaseId"), 
                                               containerId: _config.GetValue<string>("CosmosDbContainerId"));
         }
