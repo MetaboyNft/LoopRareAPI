@@ -15,9 +15,6 @@ namespace LoopRareAPI.Models
 
         public string? animation_url { get; set; }
         public string? image { get; set; }
-
-        public List<Trait>? attributes { get; set; }
-
         public int nftNumber { get; set; }
 
         public int Rank { get; set; }
@@ -26,6 +23,10 @@ namespace LoopRareAPI.Models
         public decimal Score { get; set; }
 
         public string? id { get; set; }
+
+
+        public List<Trait>? attributes { get; set; }
+
 
     }
 

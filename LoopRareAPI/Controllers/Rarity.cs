@@ -21,7 +21,16 @@ namespace LoopRareAPI.Controllers
         [Route("rankings")]
         public async Task<IActionResult> GetRankingsOverallAsync(string collectionId)
         {
-            return Ok(await _cosmosDbService.GetCollectionOverallRankingsAsync(collectionId));
+            var result = await _cosmosDbService.GetCollectionOverallRankingsAsync(collectionId);
+            if (result != null)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest("Something went wrong!");
+            }
+
         }
 
 
@@ -29,7 +38,15 @@ namespace LoopRareAPI.Controllers
         [Route("rankingsSingle")]
         public async Task<IActionResult> GetRankingsSingleAsync(string collectionId, int nftNumber)
         {
-            return Ok(await _cosmosDbService.GetCollectionSingleRankingsAsync(collectionId, nftNumber));
+            var result = await _cosmosDbService.GetCollectionSingleRankingsAsync(collectionId, nftNumber);
+            if (result != null)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest("Something went wrong!");
+            }
         }
     }
 }
