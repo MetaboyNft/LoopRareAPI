@@ -5,14 +5,15 @@ using Microsoft.Azure.Cosmos;
 
 namespace LoopRareAPI.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
-    public class Rarity : ControllerBase
+    [ApiVersion("1.0")]
+    [Route("api/{v:apiVersion}/rarity")]
+    public class RarityV1 : ControllerBase
     {
         private readonly ICosmosDbService _cosmosDbService;
 
 
-        public Rarity(ICosmosDbService cosmosDbService)
+        public RarityV1(ICosmosDbService cosmosDbService)
         {
             _cosmosDbService = cosmosDbService ?? throw new ArgumentNullException(nameof(cosmosDbService));
         }

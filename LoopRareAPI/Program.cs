@@ -1,4 +1,5 @@
 using LoopRareAPI.Models;
+using Microsoft.AspNetCore.Mvc;
 using System.Configuration;
 
 namespace LoopRareAPI
@@ -17,6 +18,12 @@ namespace LoopRareAPI
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddSingleton<ICosmosDbService>(InitializeCosmosClient(configuration));
+            builder.Services.AddApiVersioning(x =>
+            {
+                x.DefaultApiVersion = new ApiVersion(1, 0);
+                x.AssumeDefaultVersionWhenUnspecified = true;
+                x.ReportApiVersions = true;
+            });
 
 
             var app = builder.Build();
