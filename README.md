@@ -1,0 +1,2 @@
+# LoopRareAPI
+API for LoopRare
